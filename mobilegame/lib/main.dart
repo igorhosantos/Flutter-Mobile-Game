@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobilegame/service/utils/service_locator.dart';
 import 'package:mobilegame/view/screens/menu.dart';
 
 void main() {
+  setupLocator(); 
+  
   runApp(const MainGame());
 }
 
