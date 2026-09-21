@@ -5,6 +5,7 @@ import 'package:mobilegame/view/screens/gameplay.dart';
 
 class EnemyComponent extends SpriteAnimationComponent
     with HasGameRef<Gameplay>, CollisionCallbacks {
+  
   static const speed = 150;
   static final Vector2 initialSize = Vector2.all(25);
 

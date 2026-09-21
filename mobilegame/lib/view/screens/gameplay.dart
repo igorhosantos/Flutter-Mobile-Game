@@ -59,6 +59,7 @@ class Gameplay extends FlameGame
   @override
   Future<void> onLoad() async {
     // Add batch groups first so component creators can reference them.
+    
     addAll([
       starGroup = BatchGroup(priority: -1),
       bulletGroup = BatchGroup(priority: 0),
@@ -67,6 +68,7 @@ class Gameplay extends FlameGame
     ]);
 
     add(_player = PlayerComponent());
+
     addAll([
       FpsTextComponent(
         position: size - Vector2(0, 50),
@@ -85,6 +87,7 @@ class Gameplay extends FlameGame
     ]);
 
     add(EnemyCreator());
+    
     add(StarBackGroundCreator());
 
     addAll([_updateTime, _renderTime, _batchingText]);

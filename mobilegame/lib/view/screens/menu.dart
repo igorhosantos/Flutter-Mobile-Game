@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilegame/view/screens/gameplay.dart';
+import 'package:mobilegame/view/screens/scores.dart';
 
 
 class Menu extends StatefulWidget {
@@ -15,9 +16,34 @@ class Menu extends StatefulWidget {
 class _MyHomePageState extends State<Menu> {
   int _counter = 0;
 
-  void enterTheGame() {
-    print("Enter in the game");
+  @override
+  Widget build(BuildContext context) {
+    return buildMenu();
+  }
 
+  Scaffold buildMenu()
+  {
+    return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: .center,
+            children: [
+              Text(widget.title),
+              ElevatedButton(
+                onPressed: enterTheGame,
+                child: Text("Play")
+              ),
+              ElevatedButton(
+                onPressed: enterTheScores,
+                child: Text("Scores")
+              )
+            ],
+          ),
+        )
+      );
+  }
+
+  void enterTheGame() {
     showGeneralDialog(
       context: context,
       pageBuilder: (context, _, __){
@@ -34,36 +60,28 @@ class _MyHomePageState extends State<Menu> {
             ],
         ); 
         
-      });
+      }
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
+  void enterTheScores() {
+    showGeneralDialog(
+      context: context,
+      pageBuilder: (context, _, __){
+        return Stack(
           children: [
-            const Text('Game Menu'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            ElevatedButton(
-              onPressed: enterTheGame,
-              child: Text("Play"))
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: enterTheGame,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+            Scores(title: "Scores"),
+            Positioned(
+              right: 20,
+              top: 80,
+              child: IconButton(onPressed: (){
+                Navigator.pop(context);
+              }, icon: Icon(Icons.cancel_outlined))
+              ) 
+            ],
+        ); 
+        
+      }
     );
   }
 }
