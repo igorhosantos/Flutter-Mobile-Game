@@ -55,6 +55,8 @@ class Gameplay extends FlameGame
   );
 
   int _score = 0;
+  int get score => _score;
+  
 
   @override
   Future<void> onLoad() async {

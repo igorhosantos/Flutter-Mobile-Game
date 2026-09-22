@@ -19,7 +19,7 @@ class MainGame extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Menu(title: 'Flutter Demo Home Page'),
+      home: const Menu(title: 'Game Title Here :) '),
     );
   }
 }

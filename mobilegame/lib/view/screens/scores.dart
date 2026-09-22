@@ -40,7 +40,7 @@ class _MyHomePageState extends State<Scores> {
               return Center(child: Column(
             mainAxisAlignment: .center,
             children: [
-              Text("Latest Best Scores: ${snapshot.data}."),
+              Text("Latest Best Scores: ${snapshot.data?.length}."),
             ],
           ),);
             } else {

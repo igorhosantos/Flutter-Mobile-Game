@@ -50,17 +50,22 @@ class _MyHomePageState extends State<Menu> {
   }
 
   void enterTheGame() {
+    final gameplayInstance = Gameplay();
+
     showGeneralDialog(
       context: context,
       pageBuilder: (context, _, __){
         return Stack(
           children: [
-            GameWidget(game: Gameplay(),),
+            GameWidget(game: gameplayInstance,),
             Positioned(
               right: 20,
               top: 80,
               child: IconButton(onPressed: (){
-                Navigator.pop(context);
+                
+                final score = gameplayInstance.score; 
+                trySaveLatestScore(context, score).ignore();
+
               }, icon: Icon(Icons.cancel_outlined))
               ) 
             ],
@@ -68,6 +73,16 @@ class _MyHomePageState extends State<Menu> {
         
       }
     );
+  }
+
+  Future<void> trySaveLatestScore(BuildContext context,  int latestScore) async{
+    
+    print("Latest Score Saved Async : ${latestScore}");
+
+    final userAccount = locator<UserAccount>();
+    userAccount.postScores(ScoreRegistry(latestScore.toString(), DateTime.now().toString())).ignore();
+
+    Navigator.pop(context);
   }
 
   void enterTheScores() {
