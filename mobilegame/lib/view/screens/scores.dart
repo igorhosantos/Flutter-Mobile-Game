@@ -15,7 +15,6 @@ class Scores extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<Scores> {
-  int _counter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,21 +33,52 @@ class _MyHomePageState extends State<Scores> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
+            } 
+            else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              return Center(child: Column(
-            mainAxisAlignment: .center,
-            children: [
-              Text("Latest Best Scores: ${snapshot.data?.length}."),
-            ],
-          ),);
-            } else {
+            } 
+            else if (snapshot.hasData) {
+              return Container(
+                      margin: const EdgeInsets.only(top: 100.0), // Adds space above the column
+                      child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text('Best Scores', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          child: createScoreList(snapshot.data),
+                        ),
+                      ],
+                    ),
+              ); 
+            }
+            else {
               return Center(child: Text('No data found'));
             }
           },
         ),
       );
   }
+
+  ListView createScoreList(List<ScoreRegistry>? scoreList){
+    final List<int> colorCodes = <int>[600, 500, 400, 300, 200, 100];
+    return ListView.builder(
+        shrinkWrap: true, // Forces the ListView to occupy only the space it needs
+        scrollDirection: Axis.vertical, // Or Axis.horizontal
+        itemCount: scoreList?.length,
+        padding: const EdgeInsets.all(8),
+        itemBuilder: (BuildContext context, int index) {
+          
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            height: 50,
+            color: Colors.green[colorCodes[index]],
+            child: Center(child: Text('Score: ${scoreList![index].score} in ${scoreList![index].date}', style: TextStyle(color: Colors.white)),),
+          );
+        }
+    );
+  } 
 
 }
