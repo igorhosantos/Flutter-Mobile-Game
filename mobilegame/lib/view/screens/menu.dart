@@ -1,5 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:mobilegame/service/account/user_account.dart';
+import 'package:mobilegame/service/utils/service_locator.dart';
 import 'package:mobilegame/view/screens/gameplay.dart';
 import 'package:mobilegame/view/screens/scores.dart';
 
@@ -36,6 +38,10 @@ class _MyHomePageState extends State<Menu> {
               ElevatedButton(
                 onPressed: enterTheScores,
                 child: Text("Scores")
+              ),
+              ElevatedButton(
+                onPressed: clearScores,
+                child: Text("Clear Scores")
               )
             ],
           ),
@@ -83,5 +89,10 @@ class _MyHomePageState extends State<Menu> {
         
       }
     );
+  }
+
+  void clearScores() {
+    final userAccount = locator<UserAccount>();
+    userAccount.postClearScores().ignore();
   }
 }

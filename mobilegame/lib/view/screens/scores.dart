@@ -29,8 +29,8 @@ class _MyHomePageState extends State<Scores> {
 
   
     return Scaffold(
-          body: FutureBuilder<String>(
-          future: userAccount.fetchData(), // Your async function
+          body: FutureBuilder<List<ScoreRegistry>>(
+          future: userAccount.fetchBestScores(), // Your async function
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
