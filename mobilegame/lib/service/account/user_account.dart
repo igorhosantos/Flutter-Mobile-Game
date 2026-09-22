@@ -9,15 +9,20 @@ abstract class UserAccount {
 
 @JsonSerializable()
 class ScoreRegistry{
-  final String  score;
-  final String  date;
+  final int score;
+  final DateTime date;
 
   ScoreRegistry(this.score, this.date);
 
   ScoreRegistry.fromJson(Map<String, dynamic> json)
-    : score = json['score'],
-      date = json['date'];
+    : score = json['score'] as int,
+      date = DateTime.parse(json['date'] as String);
 
-  Map<String, dynamic> toJson() => {'score': score, 'date': date};
+  Map<String, dynamic> toJson() {
+    return {
+      'score': score,
+      'date': date.toIso8601String(), // Converts DateTime to a standardized string format
+    };
+  }
 
 }

@@ -63,7 +63,6 @@ class _MyHomePageState extends State<Scores> {
   }
 
   ListView createScoreList(List<ScoreRegistry>? scoreList){
-    final List<int> colorCodes = <int>[600, 500, 400, 300, 200, 100];
     return ListView.builder(
         shrinkWrap: true, // Forces the ListView to occupy only the space it needs
         scrollDirection: Axis.vertical, // Or Axis.horizontal
@@ -74,8 +73,9 @@ class _MyHomePageState extends State<Scores> {
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             height: 50,
-            color: Colors.green[colorCodes[index]],
-            child: Center(child: Text('Score: ${scoreList![index].score} in ${scoreList![index].date}', style: TextStyle(color: Colors.white)),),
+            color: (index>0) ?  Colors.green[700]: Color(0xFFFFD700)  ,
+            child: Center(child: Text('Score: ${scoreList![index].score} in ${scoreList![index].date}',
+             style: TextStyle(color:(index>0) ?  Colors.white : Colors.black)),),
           );
         }
     );

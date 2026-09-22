@@ -80,7 +80,7 @@ class _MyHomePageState extends State<Menu> {
     print("Latest Score Saved Async : ${latestScore}");
 
     final userAccount = locator<UserAccount>();
-    userAccount.postScores(ScoreRegistry(latestScore.toString(), DateTime.now().toString())).ignore();
+    userAccount.postScores(ScoreRegistry(latestScore, DateTime.now())).ignore();
 
     Navigator.pop(context);
   }

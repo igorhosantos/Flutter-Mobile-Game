@@ -26,10 +26,17 @@ class UserAccountFromLocalDisk implements UserAccount {
         return emptyList;
       }
       
-      final List<dynamic> scores = jsonDecode(serializedScores!) as List<dynamic>;
-      
-      return scores.map((item) => ScoreRegistry.fromJson(item as Map<String, dynamic>))
+      final List<dynamic> rawData = jsonDecode(serializedScores!) as List<dynamic>;
+      List<ScoreRegistry> scores = rawData.map((item) => ScoreRegistry.fromJson(item as Map<String, dynamic>))
       .toList();
+
+      //order by the best
+      if(scores.length>1)
+      {
+        scores.sort((a, b) => b.score.compareTo(a.score));
+      }
+
+      return scores;
 
     } catch (e) {
       
@@ -46,14 +53,15 @@ class UserAccountFromLocalDisk implements UserAccount {
       
       //@todo get the latest scores and check if it's a top tier for 
       //putting on the list
-      final List<ScoreRegistry> currentScores = await fetchBestScores();
+      List<ScoreRegistry> currentScores = await fetchBestScores();
       currentScores.add(newScore);
 
-    
-      String jsonString = jsonEncode(currentScores);
+      List<Map<String, dynamic>> jsonList = currentScores.map((score) => score.toJson()).toList();
+      String jsonString = jsonEncode(jsonList);
       
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString(storeId, jsonString);
+
     } catch (e) {
       // Handle any type of exception
       print('postScores An error occurred: $e');
