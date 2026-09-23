@@ -16,7 +16,8 @@ class Menu extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<Menu> {
-  int _counter = 0;
+  
+  late Gameplay _gameplayInstance;
 
   @override
   Widget build(BuildContext context) {
@@ -50,29 +51,26 @@ class _MyHomePageState extends State<Menu> {
   }
 
   void enterTheGame() {
-    final gameplayInstance = Gameplay();
-
+    _gameplayInstance = Gameplay();
+    _gameplayInstance.onGameOver = onGameOver;
+    
     showGeneralDialog(
       context: context,
       pageBuilder: (context, _, __){
         return Stack(
           children: [
-            GameWidget(game: gameplayInstance,),
-            Positioned(
-              right: 20,
-              top: 80,
-              child: IconButton(onPressed: (){
-                
-                final score = gameplayInstance.score; 
-                trySaveLatestScore(context, score).ignore();
-
-              }, icon: Icon(Icons.cancel_outlined))
-              ) 
-            ],
+            GameWidget(game: _gameplayInstance,),
+           ],
         ); 
         
       }
     );
+  }
+
+  void onGameOver()
+  {
+      final score = _gameplayInstance.score; 
+      trySaveLatestScore(context, score).ignore();
   }
 
   Future<void> trySaveLatestScore(BuildContext context,  int latestScore) async{

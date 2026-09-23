@@ -24,11 +24,15 @@ class Gameplay extends FlameGame
   int _life = 5;
   int get life => _life; 
 
+  //exposed callbacks
+  late final VoidCallback onGameOver;
+  
   //main components
   late final PlayerComponent _player;
   late final TextComponent _componentCounter;
   late final TextComponent _scoreText;
   late final SpriteButtonComponent _pauseButton;
+  late final SpriteButtonComponent _saveButton;
 
   // Batch groups — one per sprite type for isolated draw-call batching.
   // Each is a plain PositionComponent with HasAutoBatchedChildren mixed in.
@@ -45,20 +49,9 @@ class Gameplay extends FlameGame
     style: TextPaint.defaultTextStyle.copyWith(color: const Color(0xFF00FF00)),
   );
 
-  final _updateTime = TextComponent(
-    text: 'Update time: 0ms',
-    position: Vector2(0, 0),
-    priority: 1,
-  );
-
-  final TextComponent _renderTime = TextComponent(
-    text: 'Render time: 0ms',
-    position: Vector2(0, 25),
-    priority: 1,
-  );
 
   final TextComponent _batchingText = TextComponent(
-    position: Vector2(0, 50),
+    position: Vector2(0, 0),
     priority: 1,
     textRenderer: _textStyleRed,
   );
@@ -81,7 +74,7 @@ class Gameplay extends FlameGame
     
     add(StarBackGroundCreator());
 
-    addAll([_updateTime, _renderTime, _batchingText]);
+    addAll([_batchingText]);
     
     _updateBatchingLabel();
 
@@ -112,6 +105,8 @@ class Gameplay extends FlameGame
     final pausePressedSprite = await loadSprite('pause_pressed.png');
     final playSprite = await loadSprite('play.png');
     final playPressedSprite = await loadSprite('play_pressed.png');
+    final saveSprite = await loadSprite('save.png');
+    final savePressedSprite = await loadSprite('save_pressed.png');
 
     return [
        _pauseButton = SpriteButtonComponent(
@@ -132,8 +127,19 @@ class Gameplay extends FlameGame
           }
          
         },
-        position: size - Vector2(0, 75),
-        anchor: Anchor.bottomRight,
+        position: Vector2(20, size.y - 100),
+        priority: 1,
+      ),
+
+      _saveButton = SpriteButtonComponent(
+        button: saveSprite,
+        buttonDown: savePressedSprite,
+        size: Vector2(50, 50),
+        onPressed: () {
+          print('Game Closed clicked!'); 
+          onGameOver();
+        },
+        position: Vector2(20, 50),
         priority: 1,
       ),
 
@@ -161,8 +167,6 @@ class Gameplay extends FlameGame
     super.update(dt);
     _scoreText.text = 'Score: $_score';
     _componentCounter.text = 'Components: ${descendants().length}';
-    _updateTime.text = 'Update time: $updateTime ms';
-    _renderTime.text = 'Render time: $renderTime ms';
   }
 
   /// Whether all batch groups are currently enabled.
@@ -232,6 +236,7 @@ class Gameplay extends FlameGame
       _life = 0;
       _isPaused = true;
       //GAME OVER
+      onGameOver();
     }
   }
 }
