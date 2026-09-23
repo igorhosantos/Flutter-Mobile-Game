@@ -19,7 +19,7 @@ class MainGame extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Menu(title: 'Game Title Here :) '),
+      home: const Menu(title: 'Spaceship Survivor'),
     );
   }
 }

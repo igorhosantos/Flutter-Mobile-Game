@@ -2,6 +2,8 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame/palette.dart';
+import 'package:flame/text.dart';
 import 'package:flutter/services.dart';
 import 'package:mobilegame/factory/enemy_creator.dart';
 import 'package:mobilegame/view/components/player_component.dart';
@@ -18,7 +20,7 @@ class Gameplay extends FlameGame
   int _score = 0;
   int get score => _score;
   
-  bool _isPaused = false;
+  bool _isPaused = true;
   bool get isPaused => _isPaused;
 
   int _life = 5;
@@ -33,6 +35,8 @@ class Gameplay extends FlameGame
   late final TextComponent _scoreText;
   late final SpriteButtonComponent _pauseButton;
   late final SpriteButtonComponent _saveButton;
+
+  late final TextComponent _gameStatusLabel;
 
   // Batch groups — one per sprite type for isolated draw-call batching.
   // Each is a plain PositionComponent with HasAutoBatchedChildren mixed in.
@@ -97,6 +101,30 @@ class Gameplay extends FlameGame
     final hudComponent = await buildHud();
     addAll(hudComponent);
 
+    startCounting().ignore();
+  }
+
+  Future<void> startCounting() async
+  {
+    _gameStatusLabel.text = "3";
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    _gameStatusLabel.text = "2";
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    _gameStatusLabel.text = "1";
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    _gameStatusLabel.text = "START!";
+    _isPaused = false;
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    _gameStatusLabel.text = '';
+    
   }
 
   Future<Iterable<Component>> buildHud() async
@@ -107,6 +135,14 @@ class Gameplay extends FlameGame
     final playPressedSprite = await loadSprite('play_pressed.png');
     final saveSprite = await loadSprite('save.png');
     final savePressedSprite = await loadSprite('save_pressed.png');
+
+    final statusRender = TextPaint(
+      style: TextStyle(
+        fontSize: 58.0,
+        color: BasicPalette.yellow.color,
+      ),
+    );
+
 
     return [
        _pauseButton = SpriteButtonComponent(
@@ -120,10 +156,12 @@ class Gameplay extends FlameGame
           {
             _pauseButton.button = playSprite;
             _pauseButton.buttonDown = playPressedSprite;
+            _gameStatusLabel.text = "PAUSED";
           }
           else{
             _pauseButton.button = pauseSprite;
             _pauseButton.buttonDown = pausePressedSprite;
+            _gameStatusLabel.text = "";
           }
          
         },
@@ -159,6 +197,15 @@ class Gameplay extends FlameGame
         anchor: Anchor.bottomRight,
         priority: 1,
       ),
+
+      _gameStatusLabel = TextComponent(
+        position: size/2,
+        anchor: Anchor.center,
+        priority: 1,
+        size: Vector2(250, 250),
+        textRenderer: statusRender
+      ),
+
     ];
   }
 
