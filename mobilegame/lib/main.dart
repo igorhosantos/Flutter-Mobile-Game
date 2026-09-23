@@ -11,12 +11,12 @@ void main() {
 class MainGame extends StatelessWidget {
   const MainGame({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Spaceship Survivor',
       theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 0, 0, 0),
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const Menu(title: 'Spaceship Survivor'),

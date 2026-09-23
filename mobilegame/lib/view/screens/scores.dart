@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilegame/service/account/user_account.dart';
 import 'package:mobilegame/service/utils/service_locator.dart';
 import 'package:mobilegame/view/screens/gameplay.dart';
@@ -25,7 +26,11 @@ class _MyHomePageState extends State<Scores> {
   {
 
     final userAccount = locator<UserAccount>();
-
+    final fontStyle = GoogleFonts.audiowide(
+                      fontSize: 30,
+                      fontWeight: FontWeight.normal,
+                      color: const Color.fromARGB(255, 241, 239, 239),
+                    );
   
     return Scaffold(
           body: FutureBuilder<List<ScoreRegistry>>(
@@ -45,7 +50,7 @@ class _MyHomePageState extends State<Scores> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: Text('Best Scores', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                          child: Text('Best Scores', style: fontStyle),
                         ),
                         Expanded(
                           child: createScoreList(snapshot.data),

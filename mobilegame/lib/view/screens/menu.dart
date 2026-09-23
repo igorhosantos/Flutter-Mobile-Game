@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilegame/service/account/user_account.dart';
 import 'package:mobilegame/service/utils/service_locator.dart';
 import 'package:mobilegame/view/screens/gameplay.dart';
@@ -26,23 +27,47 @@ class _MyHomePageState extends State<Menu> {
 
   Scaffold buildMenu()
   {
+
+    final menuFontStyle = GoogleFonts.audiowide(
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                  color: const Color.fromARGB(255, 10, 10, 10),
+                );
+
     return Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: .center,
             children: [
-              Text(widget.title),
+              Text(
+                widget.title,
+                style: GoogleFonts.audiowide(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.amber,
+                )
+                ,
+              ),
               ElevatedButton(
                 onPressed: enterTheGame,
-                child: Text("Play")
+                child: Text(
+                  "Play",
+                  style: menuFontStyle,
+                  )
               ),
               ElevatedButton(
                 onPressed: enterTheScores,
-                child: Text("Scores")
+                child: Text(
+                  "Scores",
+                  style: menuFontStyle,
+                  )
               ),
               ElevatedButton(
                 onPressed: clearScores,
-                child: Text("Clear Scores")
+                child: Text(
+                  "Clear Scores",
+                  style: menuFontStyle,
+                  )
               )
             ],
           ),

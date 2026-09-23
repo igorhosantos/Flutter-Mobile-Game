@@ -4,7 +4,9 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilegame/factory/enemy_creator.dart';
 import 'package:mobilegame/view/components/player_component.dart';
 import 'package:mobilegame/factory/star_background_creator.dart';
@@ -138,13 +140,16 @@ class Gameplay extends FlameGame
     final saveSprite = await loadSprite('save.png');
     final savePressedSprite = await loadSprite('save_pressed.png');
 
-    final statusRender = TextPaint(
-      style: TextStyle(
-        fontSize: 58.0,
-        color: BasicPalette.yellow.color,
-      ),
+
+    final menuFontStyle = GoogleFonts.audiowide(
+                      fontSize: 55,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.amber,
     );
 
+    final statusRender = TextPaint(
+      style: menuFontStyle,
+    );
 
     return [
        _pauseButton = SpriteButtonComponent(
@@ -205,7 +210,7 @@ class Gameplay extends FlameGame
         anchor: Anchor.center,
         priority: 1,
         size: Vector2(250, 250),
-        textRenderer: statusRender
+        textRenderer: statusRender,
       ),
 
     ];
