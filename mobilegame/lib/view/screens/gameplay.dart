@@ -13,11 +13,18 @@ class Gameplay extends FlameGame
         HasCollisionDetection,
         HasPerformanceTracker,
         HasKeyboardHandlerComponents {
-  static const String description = '''
-    A simple space shooter game used for testing performance of the collision
-    detection system in Flame.
-  ''';
 
+  //main game data
+  int _score = 0;
+  int get score => _score;
+  
+  bool _isPaused = false;
+  bool get isPaused => _isPaused;
+
+  int _life = 5;
+  int get life => _life; 
+
+  //main components
   late final PlayerComponent _player;
   late final TextComponent _componentCounter;
   late final TextComponent _scoreText;
@@ -55,12 +62,6 @@ class Gameplay extends FlameGame
     priority: 1,
     textRenderer: _textStyleRed,
   );
-
-  int _score = 0;
-  int get score => _score;
-  
-  bool _isPaused = false;
-  bool get isPaused => _isPaused;
   
 
   @override
@@ -81,6 +82,7 @@ class Gameplay extends FlameGame
     add(StarBackGroundCreator());
 
     addAll([_updateTime, _renderTime, _batchingText]);
+    
     _updateBatchingLabel();
 
     add(
@@ -98,7 +100,6 @@ class Gameplay extends FlameGame
         },
       ),
     );
-
 
     final hudComponent = await buildHud();
     addAll(hudComponent);
@@ -222,6 +223,16 @@ class Gameplay extends FlameGame
       return;
     }  
     _score++;
+  }
+
+  void playerGotHit(){
+    _life--;
+    if(_life<=0)
+    {
+      _life = 0;
+      _isPaused = true;
+      //GAME OVER
+    }
   }
 }
 

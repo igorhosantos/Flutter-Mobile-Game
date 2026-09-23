@@ -60,6 +60,7 @@ class PlayerComponent extends SpriteAnimationComponent
 
   void takeHit() {
     gameRef.explosionGroup.add(ExplosionComponent(position: position));
+    gameRef.playerGotHit();
   }
 
   @override
@@ -69,7 +70,7 @@ class PlayerComponent extends SpriteAnimationComponent
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is EnemyComponent) {
-      other.takeHit();
+      takeHit();
     }
   }
 }
