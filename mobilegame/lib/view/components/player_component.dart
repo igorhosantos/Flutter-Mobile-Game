@@ -14,7 +14,8 @@ class PlayerComponent extends SpriteAnimationComponent
   @override
   Future<void> onLoad() async {
 
-    position = gameRef.size / 2;
+    position = Vector2(gameRef.size.x / 2, (gameRef.size.y / 2) + 150);
+
     add(CircleHitbox());
     add(
       bulletCreator = TimerComponent(

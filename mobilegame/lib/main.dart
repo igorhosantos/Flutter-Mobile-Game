@@ -19,7 +19,7 @@ class MainGame extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromARGB(255, 0, 0, 0),
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Menu(title: 'Spaceship Survivor'),
+      home: const Menu(title: 'Spaceship \n Survivor'),
     );
   }
 }

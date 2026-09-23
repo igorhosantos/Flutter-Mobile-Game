@@ -37,17 +37,19 @@ class _MyHomePageState extends State<Menu> {
     return Scaffold(
         body: Center(
           child: Column(
+            spacing: 30.0,
             mainAxisAlignment: .center,
             children: [
               Text(
                 widget.title,
                 style: GoogleFonts.audiowide(
-                  fontSize: 30,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
                   color: Colors.amber,
                 )
                 ,
               ),
+              SizedBox(height: 40.0),
               ElevatedButton(
                 onPressed: enterTheGame,
                 child: Text(
