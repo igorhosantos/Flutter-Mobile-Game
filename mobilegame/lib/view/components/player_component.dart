@@ -13,6 +13,7 @@ class PlayerComponent extends SpriteAnimationComponent
 
   @override
   Future<void> onLoad() async {
+
     position = gameRef.size / 2;
     add(CircleHitbox());
     add(
@@ -35,6 +36,10 @@ class PlayerComponent extends SpriteAnimationComponent
 
   final _bulletAngles = [0.5, 0.3, 0.0, -0.5, -0.3];
   void _createBullet() {
+    if(gameRef.isPaused)
+    {
+      return;
+    }    
     gameRef.bulletGroup.addAll(
       _bulletAngles.map(
         (angle) => BulletComponent(

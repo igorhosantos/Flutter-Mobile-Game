@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/services.dart';
 import 'package:mobilegame/factory/enemy_creator.dart';
 import 'package:mobilegame/view/components/player_component.dart';
@@ -20,6 +21,7 @@ class Gameplay extends FlameGame
   late final PlayerComponent _player;
   late final TextComponent _componentCounter;
   late final TextComponent _scoreText;
+  late final SpriteButtonComponent _pauseButton;
 
   // Batch groups — one per sprite type for isolated draw-call batching.
   // Each is a plain PositionComponent with HasAutoBatchedChildren mixed in.
@@ -57,6 +59,9 @@ class Gameplay extends FlameGame
   int _score = 0;
   int get score => _score;
   
+  bool _isPaused = false;
+  bool get isPaused => _isPaused;
+  
 
   @override
   Future<void> onLoad() async {
@@ -70,23 +75,6 @@ class Gameplay extends FlameGame
     ]);
 
     add(_player = PlayerComponent());
-
-    addAll([
-      FpsTextComponent(
-        position: size - Vector2(0, 50),
-        anchor: Anchor.bottomRight,
-      ),
-      _scoreText = TextComponent(
-        position: size - Vector2(0, 25),
-        anchor: Anchor.bottomRight,
-        priority: 1,
-      ),
-      _componentCounter = TextComponent(
-        position: size,
-        anchor: Anchor.bottomRight,
-        priority: 1,
-      ),
-    ]);
 
     add(EnemyCreator());
     
@@ -110,6 +98,61 @@ class Gameplay extends FlameGame
         },
       ),
     );
+
+
+    final hudComponent = await buildHud();
+    addAll(hudComponent);
+
+  }
+
+  Future<Iterable<Component>> buildHud() async
+  {
+    final pauseSprite = await loadSprite('pause.png');
+    final pausePressedSprite = await loadSprite('pause_pressed.png');
+    final playSprite = await loadSprite('play.png');
+    final playPressedSprite = await loadSprite('play_pressed.png');
+
+    return [
+       _pauseButton = SpriteButtonComponent(
+        button: pauseSprite,
+        buttonDown: pausePressedSprite,
+        size: Vector2(50, 50),
+        onPressed: () {
+          _isPaused = !isPaused;
+          print('Game Paused clicked! $_isPaused');
+          if(_isPaused)
+          {
+            _pauseButton.button = playSprite;
+            _pauseButton.buttonDown = playPressedSprite;
+          }
+          else{
+            _pauseButton.button = pauseSprite;
+            _pauseButton.buttonDown = pausePressedSprite;
+          }
+         
+        },
+        position: size - Vector2(0, 75),
+        anchor: Anchor.bottomRight,
+        priority: 1,
+      ),
+
+      FpsTextComponent(
+        position: size - Vector2(0, 50),
+        anchor: Anchor.bottomRight,
+      ),
+
+      _scoreText = TextComponent(
+        position: size - Vector2(0, 25),
+        anchor: Anchor.bottomRight,
+        priority: 1,
+      ),
+
+      _componentCounter = TextComponent(
+        position: size,
+        anchor: Anchor.bottomRight,
+        priority: 1,
+      ),
+    ];
   }
 
   @override
@@ -135,29 +178,49 @@ class Gameplay extends FlameGame
 
   @override
   void onDragStart(DragStartEvent event) {
+    if(isPaused)
+    {
+      return;
+    }    
     _player.beginFire();
     super.onDragStart(event);
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
+    if(isPaused)
+    {
+      return;
+    }  
     _player.stopFire();
     super.onDragEnd(event);
   }
 
   @override
   void onDragCancel(DragCancelEvent event) {
+    if(isPaused)
+    {
+      return;
+    }  
     _player.stopFire();
     super.onDragCancel(event);
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
+    if(isPaused)
+    {
+      return;
+    }  
     _player.position += event.canvasDelta;
     super.onDragUpdate(event);
   }
 
   void increaseScore() {
+    if(isPaused)
+    {
+      return;
+    }  
     _score++;
   }
 }

@@ -14,6 +14,10 @@ class EnemyComponent extends SpriteAnimationComponent
 
   @override
   Future<void> onLoad() async {
+    if(gameRef.isPaused)
+    {
+      return;
+    }    
     animation = await gameRef.loadSpriteAnimation(
       'enemy.png',
       SpriteAnimationData.sequenced(
@@ -27,6 +31,10 @@ class EnemyComponent extends SpriteAnimationComponent
 
   @override
   void update(double dt) {
+    if(gameRef.isPaused)
+    {
+      return;
+    }    
     super.update(dt);
     y += speed * dt;
     if (y >= gameRef.size.y) {

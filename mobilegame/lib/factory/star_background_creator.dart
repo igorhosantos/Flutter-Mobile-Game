@@ -16,6 +16,12 @@ class StarBackGroundCreator extends Component
 
   @override
   Future<void> onLoad() async {
+
+    if(gameRef.isPaused)
+    {
+      return;
+    }    
+
     spriteSheet = SpriteSheet.fromColumnsAndRows(
       image: await gameRef.images.load('stars.png'),
       rows: 4,

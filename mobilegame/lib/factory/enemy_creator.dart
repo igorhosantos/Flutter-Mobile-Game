@@ -12,6 +12,12 @@ class EnemyCreator extends TimerComponent with HasGameRef<Gameplay> {
 
   @override
   void onTick() {
+    
+    if(gameRef.isPaused)
+    {
+      return;
+    }    
+
     gameRef.enemyGroup.addAll(
       List.generate(
         5,
