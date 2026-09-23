@@ -106,22 +106,24 @@ class Gameplay extends FlameGame
 
   Future<void> startCounting() async
   {
+    final duration  = const Duration(seconds: 1);
+
     _gameStatusLabel.text = "3";
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(duration);
 
     _gameStatusLabel.text = "2";
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(duration);
 
     _gameStatusLabel.text = "1";
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(duration);
 
     _gameStatusLabel.text = "START!";
     _isPaused = false;
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(duration);
 
     _gameStatusLabel.text = '';
     
@@ -283,8 +285,18 @@ class Gameplay extends FlameGame
       _life = 0;
       _isPaused = true;
       //GAME OVER
-      onGameOver();
+      processGameOver().ignore();
     }
+  }
+
+  Future<void> processGameOver() async 
+  {
+    final duration  = const Duration(seconds: 2);
+    _gameStatusLabel.text = "GAME OVER";
+
+    await Future.delayed(duration);
+
+    onGameOver();
   }
 }
 
