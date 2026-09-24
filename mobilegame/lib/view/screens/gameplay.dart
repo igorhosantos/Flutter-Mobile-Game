@@ -45,23 +45,7 @@ class Gameplay extends FlameGame
   late final BatchGroup bulletGroup;
   late final BatchGroup enemyGroup;
   late final BatchGroup starGroup;
-  late final BatchGroup explosionGroup;
-
-  static final _textStyleRed = TextPaint(
-    style: TextPaint.defaultTextStyle.copyWith(color: const Color(0xFFFF0000)),
-  );
-
-  static final _textStyleGreen = TextPaint(
-    style: TextPaint.defaultTextStyle.copyWith(color: const Color(0xFF00FF00)),
-  );
-
-
-  final TextComponent _batchingText = TextComponent(
-    position: Vector2(0, 0),
-    priority: 1,
-    textRenderer: _textStyleRed,
-  );
-  
+  late final BatchGroup explosionGroup;  
 
   @override
   Future<void> onLoad() async {
@@ -79,26 +63,6 @@ class Gameplay extends FlameGame
     add(EnemyCreator());
     
     add(StarBackGroundCreator());
-
-    addAll([_batchingText]);
-    
-    _updateBatchingLabel();
-
-    add(
-      KeyboardListenerComponent(
-        keyDown: {
-          LogicalKeyboardKey.keyB: (_) {
-            final enabled = !bulletGroup.batchingEnabled;
-            bulletGroup.batchingEnabled = enabled;
-            enemyGroup.batchingEnabled = enabled;
-            starGroup.batchingEnabled = enabled;
-            explosionGroup.batchingEnabled = enabled;
-            _updateBatchingLabel();
-            return true;
-          },
-        },
-      ),
-    );
 
     final hudComponent = await buildHud();
     addAll(hudComponent);
@@ -221,18 +185,6 @@ class Gameplay extends FlameGame
     super.update(dt);
     _scoreText.text = 'Score: $_score';
     _componentCounter.text = 'Components: ${descendants().length}';
-  }
-
-  /// Whether all batch groups are currently enabled.
-  bool get batchingEnabled => bulletGroup.batchingEnabled;
-
-  void _updateBatchingLabel() {
-    _batchingText.text =
-        'Batching: ${batchingEnabled ? "ON" : "OFF"}  [press B to toggle]';
-
-    _batchingText.textRenderer = TextPaint(
-      style: batchingEnabled ? _textStyleGreen.style : _textStyleRed.style,
-    );
   }
 
   @override
